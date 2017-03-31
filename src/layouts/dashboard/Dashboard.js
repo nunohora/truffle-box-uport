@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-class Dashboard extends Component {
+export default class Dashboard extends Component {
   constructor(props, { authData }) {
     super(props)
     this.props.authData = authData
@@ -19,5 +19,3 @@ class Dashboard extends Component {
     )
   }
 }
-
-export default Dashboard

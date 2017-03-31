@@ -71,13 +71,14 @@ module.exports = {
   },
   resolve: {
     modules: [
-      paths.nodePaths
+      ...paths.nodePaths,
+      'node_modules',
     ],
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx', ''],
+    extensions: ['.js', '.json', '.jsx'],
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
@@ -86,7 +87,7 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       // Default loader: load all assets that are not handled
       // by other loaders with the url loader.
       // Note: This list needs to be updated with every change of extensions
@@ -109,8 +110,8 @@ module.exports = {
           /\.woff2$/,
           /\.(ttf|svg|eot)$/
         ],
-        loader: 'url',
-        query: {
+        loader: 'url-loader',
+        options: {
           limit: 10000,
           name: 'static/media/[name].[hash:8].[ext]'
         }
@@ -119,7 +120,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: paths.appSrc,
-        loader: 'babel',
+        loader: 'babel-loader',
       },
       // The notation here is somewhat confusing.
       // "postcss" loader applies autoprefixer to our CSS.
@@ -135,63 +136,26 @@ module.exports = {
       // in the main CSS file.
       {
         test: /\.css$/,
-        user: ExtractTextPlugin.extract({
-          fallback: 'style',
-          use: 'css?importLoaders=1!postcss',
-        })
-        // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
-      },
-      // JSON is not enabled by default in Webpack but both Node and Browserify
-      // allow it implicitly so we also enable it.
-      {
-        test: /\.json$/,
-        loader: 'json'
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoader: 1,
+            }
+          },
+          'postcss-loader'
+        ],
       },
       // "file" loader for svg
       {
-        test: /\.svg$/,
-        loader: 'file',
-        query: {
+        test: /\.(svg|woff|woff2|ttf|eot)$/,
+        loader: 'file-loader',
+        options: {
           name: 'static/media/[name].[hash:8].[ext]'
-        }
-      },
-      // "file" loader for fonts
-      {
-        test: /\.woff$/,
-        loader: 'file',
-        query: {
-          name: 'fonts/[name].[hash].[ext]'
-        }
-      },
-      {
-        test: /\.woff2$/,
-        loader: 'file',
-        query: {
-          name: 'fonts/[name].[hash].[ext]'
-        }
-      },
-      {
-        test: /\.(ttf|eot)$/,
-        loader: 'file',
-        query: {
-          name: 'fonts/[name].[hash].[ext]'
         }
       }
     ]
-  },
-
-  // We use PostCSS for autoprefixing only.
-  postcss: function() {
-    return [
-      autoprefixer({
-        browsers: [
-          '>1%',
-          'last 4 versions',
-          'Firefox ESR',
-          'not ie < 9', // React doesn't support IE8 anyway
-        ]
-      }),
-    ];
   },
   plugins: [
     // Makes the public URL available as %PUBLIC_URL% in index.html, e.g.:
@@ -245,12 +209,5 @@ module.exports = {
     new ManifestPlugin({
       fileName: 'asset-manifest.json'
     })
-  ],
-  // Some libraries import Node modules but don't use them in the browser.
-  // Tell Webpack to provide empty mocks for them so importing them works.
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
-  }
+  ]
 };
