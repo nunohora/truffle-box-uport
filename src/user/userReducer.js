@@ -3,18 +3,17 @@ const initialState = {
 }
 
 const userReducer = (state = initialState, action) => {
-  if (action.type === 'USER_LOGGED_IN')
-  {
-    return Object.assign({}, state, {
-      data: action.payload
-    })
-  }
-
-  if (action.type === 'USER_LOGGED_OUT')
-  {
-    return Object.assign({}, state, {
-      data: null
-    })
+  switch (action.type) {
+    case 'USER_LOGGED_IN':
+      return {
+        ...state,
+        data: action.payload
+      }
+    case 'USER_LOGGED_OUT': 
+      return {
+        ...state,
+        data: null,
+      }
   }
 
   return state

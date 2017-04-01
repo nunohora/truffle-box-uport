@@ -1,4 +1,5 @@
-import { Uport } from 'uport-lib/dist/uportlib.js'
+import { Connect } from 'uport-connect'
 
-export const uport = new Uport('TEST92184091284091284')
-export const web3 = uport.getWeb3()
+export const uPort = new Connect('TEST92184091284091284')
+
+export const web3 = uPort.getWeb3()
