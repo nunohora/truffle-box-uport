@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 
 class Profile extends Component {
-  constructor(props, { authData }) {
-    super(props)
-    this.props.authData = authData
-  }
-
+  
   render() {
+    const { authData: { name }} = this.props
+
     return(
       <main className="container">
         <div className="pure-g">
@@ -15,7 +13,7 @@ class Profile extends Component {
             <p>Change these details in UPort to see them reflected here.</p>
             <p>
               <strong>Name</strong><br />
-              {this.props.authData.name}
+              {name}
             </p>
           </div>
         </div>

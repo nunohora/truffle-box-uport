@@ -61,7 +61,8 @@
     "webpack": "2.3.3",
     "webpack-dev-server": "2.4.2",
     "webpack-manifest-plugin": "1.1.0",
-    "whatwg-fetch": "2.0.3"
+    "whatwg-fetch": "2.0.3",
+    "zeppelin-solidity": "^1.0.4"
   },
   "dependencies": {
     "react": "15.4.2",

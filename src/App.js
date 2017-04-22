@@ -12,37 +12,42 @@ import './css/open-sans.css'
 import './css/pure-min.css'
 import './App.css'
 
-export default function App({ children }) {
+export default class App extends Component {
 
-  const OnlyAuthLinks = VisibleOnlyAuth(() =>
-    <span>
-      <li className="pure-menu-item">
-        <Link to="/dashboard" className="pure-menu-link">Dashboard</Link>
-      </li>
-      <li className="pure-menu-item">
-        <Link to="/profile" className="pure-menu-link">Profile</Link>
-      </li>
-      <LogoutButtonContainer />
-    </span>
-  )
+  renderOnlyAuthLinks() {
+    return (
+      <span>
+        <li className="pure-menu-item">
+          <Link to="/dashboard" className="pure-menu-link">Dashboard</Link>
+        </li>
+        <li className="pure-menu-item">
+          <Link to="/profile" className="pure-menu-link">Profile</Link>
+        </li>
+        <LogoutButtonContainer />
+      </span>
+    );
+  }
 
-  const OnlyGuestLinks = HiddenOnlyAuth(() =>
-    <span>
-      <LoginButtonContainer />
-    </span>
-  )
+  renderOnlyGuestLinks() {
+    return (
+      <span>
+        <LoginButtonContainer />
+      </span>
+    );
+  }
 
-  return (
-    <div className="App">
-      <nav className="navbar pure-menu pure-menu-horizontal">
-        <Link to="/" className="pure-menu-heading pure-menu-link">Truffle Box</Link>
-        <ul className="pure-menu-list navbar-right">
-          <OnlyGuestLinks />
-          <OnlyAuthLinks />
-        </ul>
-      </nav>
-
-      {children}
-    </div>
-  );
+  render() {
+    return (
+        <div className="App">
+          <nav className="navbar pure-menu pure-menu-horizontal">
+            <Link to="/" className="pure-menu-heading pure-menu-link">Truffle Box</Link>
+            <ul className="pure-menu-list navbar-right">
+              {this.renderOnlyGuestLinks()}
+              {this.renderOnlyAuthLinks()}
+            </ul>
+          </nav>
+          {this.props.children}
+        </div>
+      );
+    }
 }
